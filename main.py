@@ -14,7 +14,7 @@ def scrape_ads(city: str) -> list:
     ads_list.extend(ads)
 
     while has_next is True:
-        url = main_url + f'&pageIndex={count}'
+        url =  f'{main_url}&pageIndex={count}'
         response = requests.get(url, headers=headers)
         data = response.json()
         metadata = data['metadata']
@@ -28,7 +28,7 @@ def scrape_ads(city: str) -> list:
 
 def get_phone_number():
     ads_list = scrape_ads('isfahan')
-    ads_code = set([ad['detail']['code'] for ad in ads_list])
+    ads_code = {ad['detail']['code'] for ad in ads_list}
     phone_numbers = []
     count = 1
     for ad_code in ads_code:
@@ -39,7 +39,7 @@ def get_phone_number():
             phone_numbers.extend(data['mobile'])
         except Exception:
             continue
-        print(count + '. ' + ad_code)
+        print(f'{count}. {ad_code}')
         count += 1
 
 
